@@ -90,8 +90,6 @@ async def on_ready():
         asyncio.create_task(start_tiktok_listener(user))
 
 import asyncio
-from TikTokLive import TikTokLiveClient
-from TikTokLive.events import ConnectEvent, DisconnectEvent
 
 DISCORD_CHANNEL_ID = 1475124879215952057
 
@@ -304,4 +302,5 @@ async def check_youtube_loop():
             await asyncio.sleep(60)
 
 import os
+
 client.run(os.getenv("DISCORD_TOKEN"))
