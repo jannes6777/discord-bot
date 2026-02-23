@@ -301,6 +301,50 @@ async def check_youtube_loop():
 
             await asyncio.sleep(60)
 
-import os
+@client.tree.command(name="ticket", description="Erstelle ein Support-Ticket")
+async def ticket(interaction: discord.Interaction):
+    guild = interaction.guild
+    user = interaction.user
 
+    # Kategorie suchen oder erstellen
+    category = discord.utils.get(guild.categories, name="Tickets")
+    if category is None:
+        category = await guild.create_category("Tickets")
+
+    # Rechte setzen
+    overwrites = {
+        guild.default_role: discord.PermissionOverwrite(view_channel=False),
+        user: discord.PermissionOverwrite(view_channel=True, send_messages=True),
+        guild.me: discord.PermissionOverwrite(view_channel=True, send_messages=True)
+    }
+
+    channel = await guild.create_text_channel(
+        name=f"ticket-{user.name}",
+        category=category,
+        overwrites=overwrites
+    )
+
+    await channel.send(
+        f"{user.mention} 🎫 Dein Ticket wurde erstellt!\n"
+        f"Ein Teammitglied wird dir bald helfen."
+    )
+
+    await interaction.response.send_message(
+        f"✅ Dein Ticket wurde erstellt: {channel.mention}",
+        ephemeral=True
+    )
+
+
+@client.tree.command(name="close", description="Schließt dieses Ticket")
+async def close(interaction: discord.Interaction):
+    if interaction.channel.name.startswith("ticket-"):
+        await interaction.response.send_message("🔒 Ticket wird geschlossen...")
+        await interaction.channel.delete()
+    else:
+        await interaction.response.send_message(
+            "❌ Das ist kein Ticket-Kanal.",
+            ephemeral=True
+        )
+
+import os
 client.run(os.getenv("DISCORD_TOKEN"))
