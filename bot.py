@@ -346,5 +346,11 @@ async def close(interaction: discord.Interaction):
             ephemeral=True
         )
 
+@client.event
+async def on_ready():
+    guild = discord.Object(id=1321257470697668669)
+    await client.tree.sync(guild=guild)
+    print("Commands synchronisiert.")
+
 import os
 client.run(os.getenv("DISCORD_TOKEN"))
