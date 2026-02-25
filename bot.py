@@ -307,10 +307,9 @@ async def ticket(interaction: discord.Interaction):
     user = interaction.user
 
     # Kategorie suchen oder erstellen
-    category = discord.utils.get(guild.categories, name="Tickets")
-    if category is None:
-        category = await guild.create_category("Tickets")
+     CATEGORY_ID = 1476277652401819849
 
+category = guild.get_channel(CATEGORY_ID)
     # Rechte setzen
     overwrites = {
         guild.default_role: discord.PermissionOverwrite(view_channel=False),
@@ -348,14 +347,16 @@ async def close(interaction: discord.Interaction):
 
 @client.event
 async def on_ready():
-    guild = discord.Object(id=1321257470697668669)
-    await client.tree.sync(guild=guild)
-    print("Commands synchronisiert.")
+    try:
+        guild = discord.Object(id=1321257470697668669)  # deine Server ID
+        synced = await client.tree.sync(guild=guild)
+        print(f"{len(synced)} Commands synchronisiert.")
+    except Exception as e:
+        print("Sync Fehler:", e)
 
-@client.event
-async def on_ready():
-    await client.tree.sync()
-    print(f"{client.user} ist online und Commands wurden synchronisiert.")
+    print(f"{client.user} ist online!")
+
+
 
 import os
 client.run(os.getenv("DISCORD_TOKEN"))
