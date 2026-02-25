@@ -308,9 +308,9 @@ async def ticket(interaction: discord.Interaction):
 
     # Kategorie suchen oder erstellen
      CATEGORY_ID = 1476277652401819849
-
-category = guild.get_channel(CATEGORY_ID)
+    category = guild.get_channel(CATEGORY_ID)
     # Rechte setzen
+    
     overwrites = {
         guild.default_role: discord.PermissionOverwrite(view_channel=False),
         user: discord.PermissionOverwrite(view_channel=True, send_messages=True),
