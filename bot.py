@@ -352,5 +352,10 @@ async def on_ready():
     await client.tree.sync(guild=guild)
     print("Commands synchronisiert.")
 
+@client.event
+async def on_ready():
+    await client.tree.sync()
+    print(f"{client.user} ist online und Commands wurden synchronisiert.")
+
 import os
 client.run(os.getenv("DISCORD_TOKEN"))
